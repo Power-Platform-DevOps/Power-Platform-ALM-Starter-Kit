@@ -25,7 +25,7 @@
 The goal of this project is to provide to the `Power Platform community` a `kit` that will `help people start their DevOps journey with the Power Plaform`.
 
 Whether you are:
-- an experienced Power Platform or Dynamics 365 team who want to improve the quality and the delivery time of your release
+- an experienced Power Platform or Dynamics 365 team who want to improve the quality and the delivery time of your deployments
 - a citizen developer who wants an easy way to develop new features for your app on an isolated environment before sharing them with other members of your company
 
 we will try to make this starter kit useful for you.
