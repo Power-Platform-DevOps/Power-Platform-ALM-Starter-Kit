@@ -90,8 +90,8 @@ Thanks to the following people who have contributed to this project:
 ## Contact
 
 If needed, you can contact us on twitter:
-- ![Twitter URL](https://img.shields.io/twitter/url?label=Benedikt%20Bergmann&style=social&url=https%3A%2F%2Ftwitter.com%2FBergmannBene)
-- ![Twitter URL](https://img.shields.io/twitter/url?label=Raphael%20Pothin&style=social&url=https%3A%2F%2Ftwitter.com%2FRaphaelPothin)
+- [@BergmannBene on Twitter](https://twitter.com/BergmannBene)
+- [@RaphaelPothin on Twitter](https://twitter.com/RaphaelPothin)
 
 ## License
 
