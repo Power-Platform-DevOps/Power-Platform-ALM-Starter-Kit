@@ -1,0 +1,124 @@
+# Quality check of a work branch before merge with the main branch in the context of a pull request
+
+# Input variables:
+# - GitHubPAT: Your GitHub PAT
+
+# Pipeline automatically triggered when a new pull request targetting the main branch is created
+trigger: none
+
+pr:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - SolutionsUnpacked/*
+    exclude:
+    - Workflows/*
+    - LICENSE
+    - README.md
+
+# Get the full name of the targeted branch, extracted from 'Build.SourceBranch' or 'System.PullRequest.SourceBranch' predefined variables
+variables:
+  SolutionName: CustomTeamsIntegration
+  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/') }}:
+    branchName: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
+  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
+    branchName: $[ replace(variables['System.PullRequest.SourceBranch'], 'refs/heads/', '') ]
+
+stages:
+# Stage for:
+# - stopping the pipeline if it is an update on pipeline definitions in the repo
+# - echo variables
+- stage: 'Initialization'
+  displayName: 'Initialize pipeline'
+  condition: and(succeeded(), not(startsWith(variables['branchName'], 'Workflows')))
+  jobs:
+    - job: 'Initialization'
+      displayName: 'Initialization job'
+      pool:
+        name: Azure Pipelines
+        vmImage: 'windows-2019'
+
+      steps:
+      - script: |
+          echo Branch Name: $(branchName)
+          echo Solution Name: $(SolutionName)
+
+# Stage for:
+# - the build an unmanaged solution from the files in the pull request source branch
+# - the execution of the solution checker on the pack unmanaged solution
+- stage: 'SolutionCheck'
+  displayName: 'Power Platform Solution Check'
+  jobs:
+    - job: 'SolutionCheck'
+      displayName: 'SolutionCheck job'
+      pool:
+        name: Azure Pipelines
+        vmImage: 'windows-2019'
+
+      steps:
+      # Install the Power Platform Build Tools
+      - task: PowerPlatformToolInstaller@0
+        inputs:
+          DefaultVersion: true
+      
+      # Build an unmanaged solution from the files in the pull request source branch
+      - task: PowerPlatformPackSolution@0
+        inputs:
+          SolutionSourceFolder: '$(Build.SourcesDirectory)\SolutionsUnpacked\$(SolutionName)'
+          SolutionOutputFile: '$(Build.ArtifactStagingDirectory)\$(SolutionName).zip'
+
+      # Execute the Solution Checker on the pack unmanaged solution we got in the previous task 
+      - task: PowerPlatformChecker@0
+        inputs:
+          PowerPlatformSPN: 'Power Apps Checker Client'
+          FilesToAnalyze: '$(Build.ArtifactStagingDirectory)\$(SolutionName).zip'
+          RuleSet: '0ad12346-e108-40b8-a956-9a8f95ea18c9'
+
+      # Publish the unmanaged solution we got in a previous task as an artifcat so we can use it in a next stage
+      - publish: '$(Build.ArtifactStagingDirectory)\$(SolutionName).zip'
+        displayName: 'Publish unmanaged solution for later use in the pipeline'
+        artifact: dropUnmanagedSolution
+
+# Stage for deployment of the unmnaged solution to a QA environment
+# This stage runs only if 'SolutionCheck' stage is succeeded
+- stage: 'DeployToQA'
+  displayName: 'Deploy the unmanaged solution to a QA environment'
+  dependsOn: SolutionCheck
+  condition: succeeded()
+  jobs:
+    - deployment: 'DeployToQA'
+      pool:
+        name: Azure Pipelines
+        vmImage: 'windows-2019'
+
+      environment: 'QA'
+
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              # Get artifacts built in the previous stage with the unmanaged solution
+              - download: current
+                artifact: dropUnmanagedSolution
+
+              # Install the Power Platform QA Tools
+              - task: PowerPlatformToolInstaller@0
+                inputs:
+                  DefaultVersion: true
+
+              # Import the unmanaged solution to the QA environment
+              - task: PowerPlatformImportSolution@0
+                inputs:
+                  authenticationType: 'PowerPlatformSPN'
+                  PowerPlatformSPN: 'QA'
+                  SolutionInputFile: '$(Pipeline.Workspace)\dropUnmanagedSolution\$(SolutionName).zip'
+                  AsyncOperation: true
+                  MaxAsyncWaitTime: '240'
+
+              # Publish all customizations on the targeted dev environment
+              - task: PowerPlatformPublishCustomizations@0
+                inputs:
+                  authenticationType: 'PowerPlatformSPN'
+                  PowerPlatformSPN: 'QA'
