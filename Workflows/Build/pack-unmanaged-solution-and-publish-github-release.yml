@@ -16,6 +16,10 @@ trigger:
 
 pr: none # Pipeline not triggered on a pull request
 
+# Variables
+# - Name of the solution to pack as unmanaged and to publish as GitHub release
+# - Name of the GitHub connection to use
+# - Name of the GitHub repository to consider
 variables:
 - name: SolutionName
   value: CustomTeamsIntegration
