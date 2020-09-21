@@ -18,6 +18,7 @@ pr:
     - LICENSE
     - README.md
 
+# Name of the solution we want to deploy to QA
 # Get the full name of the targeted branch, extracted from 'Build.SourceBranch' or 'System.PullRequest.SourceBranch' predefined variables
 variables:
   SolutionName: CustomTeamsIntegration

@@ -11,6 +11,7 @@ pr: none # Pipeline not triggered on a pull request
 
 name: $[ variables['branchName'] ]
 
+# Path to the file with the environment variable values
 # Get the full name of the targeted branch, extracted from 'Build.SourceBranch' or 'System.PullRequest.SourceBranch' predefined variables
 variables:
   EnvironmentVariableValuesFilePath: $(Build.SourcesDirectory)\SolutionsUnpacked\$(SolutionName)\EnvironmentVariables\environment_variable_values.json
