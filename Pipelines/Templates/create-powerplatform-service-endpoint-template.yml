@@ -1,0 +1,51 @@
+# Pipeline template for the creation of the Power Platform service endpoint
+
+parameters:
+- name: AZURE_DEVOPS_ORGANIZATION_URL # URL of the Azure DevOps organization where you want to create the Power Platform service endpoint
+  type: string
+  default: ''
+- name: ENVIRONMENT_NAME # Name of the Power Platform environment you want to create a service endpoint for
+  type: string
+  default: ''
+- name: BRANCH_NAME # Current Branch Name
+  type: string
+  default: ''
+- name: PAT_TOKEN # Personnal access token used for the calls to the Azure DevOps CLI
+  type: string
+  default: ''
+- name: CURRENT_PROJECT_ID # Current Project ID
+  type: string
+  default: ''
+
+steps:
+# Pull the last changes made to the branch (file with the request body for the creation of the Power Platform service endpoint)
+- task: CmdLine@2
+  inputs:
+    script: |
+      echo pull all changes from remote branch
+      git config user.email "$(Email)"
+      git config user.name "Automatic Build"
+
+      echo branch full name ${{ parameters.BRANCH_NAME }}
+      git checkout ${{ parameters.BRANCH_NAME }}
+      git -c http.extraheader="AUTHORIZATION: bearer $(System.AccessToken)" pull
+
+# Create new Power Platform service endpoint based on request body in a file in the repository
+- powershell: |
+    $org = '${{ parameters.AZURE_DEVOPS_ORGANIZATION_URL }}'
+    $env:AZURE_DEVOPS_EXT_PAT = '${{ parameters.PAT_TOKEN }}'
+
+    $newServiceEndpoint = az devops service-endpoint create --organization $org --project ${{ parameters.CURRENT_PROJECT_ID }} --service-endpoint-configuration $(System.DefaultWorkingDirectory)/ServiceEndpoints/ServiceEndpointCreation_RequestBodies/powerplatform-spn-${{ parameters.ENVIRONMENT_NAME }}.json
+
+    $newServiceEndpointAsJSON = $newServiceEndpoint | ConvertFrom-Json
+    
+    $newServiceEndpointId = $newServiceEndpointAsJSON.id
+
+    Write-Host "##vso[task.setvariable variable=NewServiceEndpointId;]$newServiceEndpointId"
+    
+# Enable the Power Platform service endpoint we just created for all the pipelines
+- powershell: |
+    $org = '${{ parameters.AZURE_DEVOPS_ORGANIZATION_URL }}'
+    $env:AZURE_DEVOPS_EXT_PAT = '${{ parameters.PAT_TOKEN }}'
+
+    az devops service-endpoint update --organization $org --project ${{ parameters.CURRENT_PROJECT_ID }} --id $($env:NewServiceEndpointId) --enable-for-all
