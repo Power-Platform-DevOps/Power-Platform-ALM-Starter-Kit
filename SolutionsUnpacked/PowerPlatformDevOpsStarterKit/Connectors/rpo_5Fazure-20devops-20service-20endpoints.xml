@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Connector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <connectorid>2d25f8fa-f492-4fc2-8d8b-43ff69bb9594</connectorid>
+  <description></description>
+  <displayname>Azure DevOps Service Endpoints</displayname>
+  <iconbrandcolor>#007ee5</iconbrandcolor>
+  <name>rpo_5Fazure-20devops-20service-20endpoints</name>
+  <connectortype>1</connectortype>
+  <openapidefinition>/Connector/rpo_5Fazure-20devops-20service-20endpoints_openapidefinition.json</openapidefinition>
+  <connectionparameters>/Connector/rpo_5Fazure-20devops-20service-20endpoints_connectionparameters.json</connectionparameters>
+  <policytemplateinstances>/Connector/rpo_5Fazure-20devops-20service-20endpoints_policytemplateinstances.json</policytemplateinstances>
+  <iconblob>/Connector/rpo_5Fazure-20devops-20service-20endpoints_iconblob.Png</iconblob>
+</Connector>

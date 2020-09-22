@@ -1,0 +1,1 @@
+{"token":{"type":"oauthSetting","oAuthSettings":{"identityProvider":"visualstudio","clientId":"6AC42E20-B479-4AA2-BCF3-A8838A76FE1D","scopes":["vso.build_execute vso.project vso.serviceendpoint_manage"],"redirectMode":"Global","redirectUrl":"https://global.consent.azure-apim.net/redirect","properties":{"IsFirstParty":"False"},"customParameters":{}}}}
