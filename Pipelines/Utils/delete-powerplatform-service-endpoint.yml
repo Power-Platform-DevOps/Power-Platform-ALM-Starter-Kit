@@ -2,7 +2,7 @@
 
 # Variables:
 #   EnvironmentName - String - Not secret - Let user override
-#   AzureDevOpsOrganizationURL - String - Secret - Do not let user override
+#   AzureDevOpsOrganizationURL - String - Secret - Do not let user override (ex: https://dev.azure.com/<organization>/)
 #   PatToken - String - Secret - Do not let user override
 
 # Pipeline triggered manually

@@ -5,7 +5,8 @@
 #   TenantId - String - Secret - Do not let user override
 #   ApplicationId - String - Secret - Do not let user override
 #   ClientSecret - String - Secret - Do not let user override
-#   PowerPlatformEnvironmentURLBase - String - Not secret - Let user override
+#   PowerPlatformEnvironmentURLBase - String - Not secret - Let user override (ex: crm3.dynamics.com)
+#   AzureDevOpsOrganizationURL - String - Not secret - Do not let user override (ex: https://dev.azure.com/<organization>/)
 #   String - Not secret - Do not let user override
 #   PatToken - String - Secret - Do not let user override
 

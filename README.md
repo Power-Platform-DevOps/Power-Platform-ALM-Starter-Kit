@@ -28,11 +28,20 @@ we will try to make this starter kit useful for you.
 
 ## Prerequisites
 
-Work in progress!
+To use this starter kit, you will need to have the following components already available:
+- an Azure DevOps organization
+- an Azure DevOps projet with a repository
+- the Power Platform Build Tools extension installed in your Azure DevOps organization
+- a service principal registered in Azure DevOps with the following permissions and a client secret: `Dynamics CRM.user_impersonation` and `Microsoft Graph.User.Read`
+- an Application User created on one of your existing Power Platform environments (for example the Production environment)
+- a Power Platform Service Connection created in the considered Azure DevOps project associated to the Power Platform environment with the Application User
+- a PAT (Personal access token) created for the considered Azure DevOps organization with `Full access` (we are not able to clearly identify the access needed to enable a service connection for all pipelines)
 
 ## How to deploy the Power Platform ALM Starter Kit?
 
-Work in progress!
+1. Copy the `Pipelines` and `ServiceEndpoints` folders of this repository at the root of the repository of the Azure DevOps project you want to use
+2. Create pipelines from all YAML pipeline definitions in the `Pipelines/Utils` folder manually adding the variables specified at the beginning of each pipeline definitions
+3. Test the pipelines
 
 ## Contributing to the Power Platform ALM Starter Kit project
 
