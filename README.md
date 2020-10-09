@@ -26,7 +26,11 @@ Whether you are:
 
 we will try to make this starter kit useful for you.
 
-## Prerequisites
+## What can you find in the Power Platform ALM Starter Kit?
+
+
+## How to deploy the Power Platform ALM Starter Kit?
+### Prerequisites
 
 To use this starter kit, you will need to have the following components already available:
 - an Azure DevOps organization
@@ -37,7 +41,7 @@ To use this starter kit, you will need to have the following components already 
 - a Power Platform Service Connection created in the considered Azure DevOps project associated to the Power Platform environment with the Application User
 - a PAT (Personal access token) created for the considered Azure DevOps organization with `Full access` (at the moment, we are not able to clearly identify the access needed to enable a service connection for all pipelines)
 
-## How to deploy the Power Platform ALM Starter Kit?
+### Step-by-step guide
 
 1. Copy the `Pipelines` and `ServiceEndpoints` folders of this repository
 2. Past it at the root of the repository of the Azure DevOps project you want to use
