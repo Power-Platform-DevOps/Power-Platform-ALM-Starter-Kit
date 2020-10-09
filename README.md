@@ -28,6 +28,29 @@ we will try to make this starter kit useful for you.
 
 ## What can you find in the Power Platform ALM Starter Kit?
 
+```
+Power-Platform-ALM-Starter-Kit
+│   README.md
+│   LICENSE
+|   CODE_OF_CONDUCT.md  
+│
+└───Pipelines
+└───└───Templates
+│   │   │   create-powerplatform-service-endpoint-template.yml: Pipeline template for the creation of a Power Platform service endpoint
+│   │   │   delete-powerplatform-service-endpoint-template.yml: Pipeline template for the deletion of a Power Platform service endpoint
+│   │   │   generate-powerplatform-environment-domainname-template.yml: Pipeline template for the generation of a Power Platform Environment DomainName from the EnvironmentName variable
+│   │   │   generate-powerplatform-environment-url-template.yml: Pipeline template for the generation of the URL of a Power Platform Environment using the EnvironmentName variable
+│   │   │
+└───└───Utils
+│   │   │   create-powerplatform-environment-and-service-endpoint.yml: Pipeline used to create of a Power Platform environment and generate the associated Power Platform service endpoint
+│   │   │   create-powerplatform-service-endpoint.yml: Pipeline used to create of a Power Platform service endpoint
+│   │   │   delete-powerplatform-environment-and-service-endpoint.yml: Pipeline used to delete a Power Platform environment and delete the associated Power Platform service endpoint
+│   │   │   delete-powerplatform-service-endpoint.yml: Pipeline used to delete a service endpoint
+│   │   │   powerplatform-service-connection-test.yml: Pipeline used to test a Power Platform service connection with its name provided as variable
+│   │   │  
+└───ServiceEndpoints
+│   │   powerplatform-spn-template.json: Body request template for the creation of a Power Platform service endpoint
+```
 
 ## How to deploy the Power Platform ALM Starter Kit?
 ### Prerequisites
