@@ -39,9 +39,10 @@ To use this starter kit, you will need to have the following components already 
 
 ## How to deploy the Power Platform ALM Starter Kit?
 
-1. Copy the `Pipelines` and `ServiceEndpoints` folders of this repository at the root of the repository of the Azure DevOps project you want to use
-2. Create pipelines from all YAML pipeline definitions in the `Pipelines/Utils` folder manually adding the variables specified at the beginning of each pipeline definitions
-3. Test the pipelines
+1. Copy the `Pipelines` and `ServiceEndpoints` folders of this repository
+2. Past it at the root of the repository of the Azure DevOps project you want to use
+3. Create pipelines from all YAML pipeline definitions in the `Pipelines/Utils` folder manually adding the variables specified at the beginning of each pipeline definitions
+4. Test the pipelines
 
 ## Contributing to the Power Platform ALM Starter Kit project
 
