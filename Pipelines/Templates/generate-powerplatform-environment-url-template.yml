@@ -3,8 +3,6 @@
 steps:
 # Call to the pipeline template for the generation of a Power Platform Environment DomainName from the EnvironmentName variable
 - template: ./generate-powerplatform-environment-domainname-template.yml
-  parameters:
-    POWERPLATFORM_ENVIRONMENT_DISPLAY_NAME: '$(EnvironmentName)'
 
 # Generate Power Platform Environment URL from the the DomainName and PowerPlatformEnvironmentURLBase variables using PowerShell
 - powershell: |
