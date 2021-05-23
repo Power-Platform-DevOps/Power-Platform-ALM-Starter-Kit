@@ -64,12 +64,13 @@ Power-Platform-ALM-Starter-Kit
 
 To use this starter kit, you will need to have the following components already available:
 - an Azure DevOps organization
-- an Azure DevOps projet with a repository
+- an Azure DevOps project with a repository
 - the Power Platform Build Tools extension installed in your Azure DevOps organization
 - a service principal registered in Azure DevOps with the following permissions and a client secret: `Dynamics CRM.user_impersonation` and `Microsoft Graph.User.Read`
-- an Application User created on one of your existing Power Platform environments (for example the Production environment)
-- a Power Platform Service Connection created in the considered Azure DevOps project associated to the Power Platform environment with the Application User
+- an Application User created on one of your existing Power Platform environments (for example the **Production** environment)
+- a Power Platform Service Connection created in the considered Azure DevOps project associated to the Power Platform environment with the Application User previously configured
 - a PAT (Personal access token) created for the considered Azure DevOps organization with `Full access` (at the moment, we are not able to clearly identify the access needed to enable a service connection for all pipelines)
+- Add the **Contribute** permission to your project **Build Service** user account on your repository
 
 ### Step-by-step guide
 
