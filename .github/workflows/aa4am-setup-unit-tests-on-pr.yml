@@ -7,7 +7,7 @@ on:
     branches:
       - main
     paths:
-    - 'Scripts/Tests/*.ps1'
+    - 'Scripts/*.ps1'
 
 jobs:
   # Job for the execution of the unit tests for the setup of the AA4AM app
