@@ -12,3 +12,4 @@ steps:
 
     echo "##vso[task.setvariable variable=PowerPlatformEnvironmentURL;isOutput=true]$POWERPLATFORM_URL_TMP"
   name: generatePowerPlatformEnvironmentURL
+  displayName: 'Generate Power Platform environment URL'

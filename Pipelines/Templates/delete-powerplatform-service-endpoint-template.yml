@@ -18,3 +18,4 @@ steps:
     $serviceEndpointId = $targetedprojectServiceEndpoint.id
 
     az devops service-endpoint delete --id $serviceEndpointId --yes
+  displayName: 'Delete Power Platform service connection'

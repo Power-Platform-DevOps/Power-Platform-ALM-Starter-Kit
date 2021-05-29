@@ -23,3 +23,4 @@ steps:
 
     echo "##vso[task.setvariable variable=PowerPlatformEnvironmentDomainName;isOutput=true]$DOMAIN_NAME_TMP"
   name: generatePowerPlatformEnvironmentDomainName
+  displayName: 'Generate Power Platform environment domain name'

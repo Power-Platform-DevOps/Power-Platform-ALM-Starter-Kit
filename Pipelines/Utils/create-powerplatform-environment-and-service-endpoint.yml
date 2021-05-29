@@ -1,29 +1,69 @@
-# Pipeline used to create of a Power Platform environment and generate the associated Power Platform service endpoint
-
-# Variables:
-#   EnvironmentName - String - Not secret - Let user override
-#   PowerPlatformEnvironmentSKU - String - Not secret - Let user override (pick one value: Production, Sandbox, Trial)
-#   PowerPlatformEnvironmentAppsTemplates - String - Not secret - Let user override (eliminate the values you do not want: D365_Sales, D365_CustomerService, D365_FieldService, D365_ProjectServiceAutomation, D365_CDSSampleApp, D365_DeveloperEdition)
-#   PowerPlatformEnvironmentLocation - String - Not secret - Let user override (ex: canada)
-#   PowerPlatformEnvironmentLanguageCode - String - Not secret - Let user override (ex: 1033 for English)
-#   PowerPlatformEnvironmentCurrencyName - String - Not secret - Let user override (ex: CAD)
-#   TenantId - String - Secret - Do not let user override
-#   ApplicationId - String - Secret - Do not let user override
-#   ClientSecret - String - Secret - Do not let user override
-#   PowerPlatformEnvironmentURLBase - String - Not secret - Let user override (ex: crm3.dynamics.com)
-#   AzureDevOpsOrganizationURL - String - Not secret - Do not let user override (ex: https://dev.azure.com/<organization>/)
-#   PatToken - String - Secret - Do not let user override
-#   MainPowerPlatformServiceEndpointName - String - Not Secret - Do not let user override
+# Pipeline for the creation of a Power Platform environment and the generation of the associated Power Platform service connection
+# Note: If the Power Platform environment already exist (search based on the name provided) nothing will be done for the Power Platform environment creation stage
 
 # Pipeline triggered manually
 trigger: none
 
+parameters:
+#  EnvironmentName: Name of the Power Platform environment to create
+- name: EnvironmentNameParameter
+  displayName: Power Platform environment Name
+  type: string
+#  PowerPlatformEnvironmentSKU: SKU of the Power Platform environment to create (allowed values: Production, Sandbox, Trial)
+- name: PowerPlatformEnvironmentSKUParameter
+  displayName: Power Platform environment SKU
+  type: string
+  default: Sandbox
+  values:
+  - Production
+  - Sandbox
+  - Trial
+#  EnvironmentDescription: Description of the Power Platform environment to create ("/" to ignore this parameter)
+- name: EnvironmentDescriptionParameter
+  displayName: Power Platform environment description ("/" to ignore)
+  type: string
+  default: "/"
+#  EnvironmentSecurityGroupId: Id of the Azure AD Security Group to apply to secure the access to the Power Platform environment to create ("/" to ignore this parameter)
+- name: EnvironmentSecurityGroupIdParameter
+  displayName: Power Platform environment security group id ("/" to ignore)
+  type: string
+  default: "/"
+
 variables:
+  # Variable group with the following variables:
+  #   DataverseEnvironmentConfigurationFileName: Full name (with extension) of the file with the configuration for the creation of the Power Platform environment
+  #   PowerPlatformEnvironmentURLBase: Base of the URL of the Power Platform environment to create (ex: crm3.dynamics.com)
+  #   TenantId: ID of the tenant where the considered app registration has been created (secret)
+  #   ApplicationId: ID of the considered app registration (secret)
+  #   ClientSecret: Secret of the considered app registration (secret)
+  #   AzureDevOpsOrganizationURL: URL of the considered Azure DevOps organization (ex: https://dev.azure.com/<organization>/)
+  #   PatToken: Personal Access Token is full permissions for the creation of the Power Platform service connection
+  - group: power-platform-environment-management-variable-group
+
+  - name: EnvironmentName
+    value: ${{ parameters.EnvironmentNameParameter }}
+
+  - name: PowerPlatformEnvironmentSKU
+    value: ${{ parameters.PowerPlatformEnvironmentSKUParameter }}
+
+  - name: EnvironmentDescription
+    ${{ if eq(parameters['EnvironmentDescriptionParameter'], '/') }}:
+      value: ""
+    ${{ if ne(parameters['EnvironmentDescriptionParameter'], '/') }}:
+      value: ${{ parameters.EnvironmentDescriptionParameter }}
+
+  - name: EnvironmentSecurityGroupId
+    ${{ if eq(parameters['EnvironmentSecurityGroupIdParameter'], '/') }}:
+      value: ""
+    ${{ if ne(parameters['EnvironmentSecurityGroupIdParameter'], '/') }}:
+      value: ${{ parameters.EnvironmentSecurityGroupIdParameter }}
+
   # Full name of the targeted branch, extracted from 'Build.SourceBranch' or 'System.PullRequest.SourceBranch' predefined variables
-  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/') }}:
-    BranchName: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
-  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
-    BranchName: $[ replace(variables['System.PullRequest.SourceBranch'], 'refs/heads/', '') ]
+  - name: BranchName
+    ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/') }}:
+      value: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
+    ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
+      value: $[ replace(variables['System.PullRequest.SourceBranch'], 'refs/heads/', '') ]
 
 stages:
 # Stage for the creation of the Power Platform environment
@@ -33,31 +73,14 @@ stages:
     - job: 'PowerPlatformEnvironmentCreation'
       displayName: 'PowerPlatformEnvironmentCreation Job'
       pool:
-        vmImage: 'windows-2019'
+        vmImage: 'windows-latest'
 
       steps:
       # Call to the pipeline template for the generation of a Power Platform Environment DomainName from the EnvironmentName variable
       - template: ../Templates/generate-powerplatform-environment-domainname-template.yml
 
-      # Installation of the Power Platform Build Tools extension
-      - task: PowerPlatformToolInstaller@0
-        inputs:
-          DefaultVersion: true
-
-      # Creation of a new Power Platform Environment
-      #   SKUs: Production, Sandbox, Trial
-      #   AppsTemplates: D365_Sales, D365_CustomerService, D365_FieldService, D365_ProjectServiceAutomation, D365_CDSSampleApp, D365_DeveloperEdition
-      - task: PowerPlatformCreateEnvironment@0
-        inputs:
-          authenticationType: 'PowerPlatformSPN'
-          PowerPlatformSPN: '$(MainPowerPlatformServiceEndpointName)'
-          DisplayName: '$(EnvironmentName)'
-          EnvironmentSku: '$(PowerPlatformEnvironmentSKU)'
-          AppsTemplate: '$(PowerPlatformEnvironmentAppsTemplates)'
-          LocationName: '$(PowerPlatformEnvironmentLocation)'
-          LanguageName: '$(PowerPlatformEnvironmentLanguageCode)'
-          CurrencyName: '$(PowerPlatformEnvironmentCurrencyName)'
-          DomainName: '$(generatePowerPlatformEnvironmentDomainName.PowerPlatformEnvironmentDomainName)'
+      # Call to the pipeline template for the creation of the Power Platform environment
+      - template: ../Templates/create-powerplatform-environment-template.yml
 
 # Call to the pipeline template for the creation of the Power Platform service endpoint associated to the new Power Platform environment we just created
 - template: ../Templates/create-powerplatform-service-endpoint-template.yml

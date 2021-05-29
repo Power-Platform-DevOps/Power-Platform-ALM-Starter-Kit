@@ -1,13 +1,29 @@
-# Pipeline used to delete a Power Platform environment and delete the associated Power Platform service endpoint
-
-# Variables:
-#   EnvironmentName - String - Not secret - Let user override
-#   PowerPlatformServiceEndpointName - String - Not secret - Let user override
-#   AzureDevOpsOrganizationURL - String - Not secret - Do not let user override (ex: https://dev.azure.com/<organization>/)
-#   PatToken - String - Secret - Do not let user override
+# Pipeline used to delete a Power Platform environment and its associated Power Platform service connection
 
 # Pipeline triggered manually
 trigger: none
+
+parameters:
+#  EnvironmentName: Name of the Power Platform environment to delete
+- name: EnvironmentNameParameter
+  displayName: Power Platform environment Name
+  type: string
+#  PowerPlatformServiceEndpointName: Name of the Power Platform service connection to delete
+- name: PowerPlatformServiceEndpointNameParameter
+  displayName: Power Platform service connection Name
+  type: string
+
+variables:
+  # Variable group with the following variables:
+  #   AzureDevOpsOrganizationURL: URL of the considered Azure DevOps organization (ex: https://dev.azure.com/<organization>/)
+  #   PatToken: Personal Access Token is full permissions for the creation of the Power Platform service connection
+  - group: power-platform-environment-management-variable-group
+
+  - name: EnvironmentName
+    value: ${{ parameters.EnvironmentNameParameter }}
+
+  - name: PowerPlatformServiceEndpointName
+    value: ${{ parameters.PowerPlatformServiceEndpointNameParameter }}
 
 stages:
 # Stage for the deletion of the Power Platform environment
@@ -17,16 +33,18 @@ stages:
     - job: 'PowerPlatformEnvironmentDeletion'
       displayName: 'PowerPlatformEnvironmentDeletion Job'
       pool:
-        vmImage: 'windows-2019'
+        vmImage: 'windows-latest'
 
       steps:
       # Installation of the Power Platform Build Tools extension
       - task: PowerPlatformToolInstaller@0
+        displayName: 'Install Power Platform Build Tools'
         inputs:
           DefaultVersion: true
       
       # Deletion of the Power Platform Environment
       - task: PowerPlatformDeleteEnvironment@0
+        displayName: 'Delete Power Platform environment'
         inputs:
           authenticationType: 'PowerPlatformSPN'
           PowerPlatformSPN: '$(PowerPlatformServiceEndpointName)'
@@ -40,7 +58,7 @@ stages:
     - job: 'ServiceEndpointDeletion'
       displayName: 'ServiceEndpointDeletion Job'
       pool:
-        vmImage: 'windows-2019'
+        vmImage: 'windows-latest'
 
       steps:
       # Call to the pipeline template for the deletion of a Power Platform service endpoint
