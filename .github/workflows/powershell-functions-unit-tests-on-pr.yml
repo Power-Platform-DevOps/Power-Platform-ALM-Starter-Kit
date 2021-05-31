@@ -1,5 +1,5 @@
-name: aa4am-setup-unit-tests-on-pr
-# Execute the unit tests for the setup of the AA4AM app on a pull request to main
+name: powershell-functions-unit-tests-on-pr
+# Execute the unit tests for the PowerShell functions on a pull request to main
 
 # Workflow triggered by a pull request targeting the main branch
 on:
@@ -10,7 +10,7 @@ on:
     - 'Scripts/*.ps1'
 
 jobs:
-  # Job for the execution of the unit tests for the setup of the AA4AM app
+  # Job for the execution of the unit tests for PowerShell functions
   aa4am-setup-unit-tests:
     runs-on: windows-latest
 
