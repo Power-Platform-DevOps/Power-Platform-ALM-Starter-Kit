@@ -28,6 +28,7 @@ steps:
     $dataverseEnvironment = New-DataverseEnvironment @NewDataverseEnvironmentParams -verbose
 
     if ($dataverseEnvironment.Error -ne $null) {
-      throw "Error in the creation of the Dataverse environment."
+      $error = $dataverseEnvironment.Error
+      throw "Error in the creation of the Dataverse environment: $error"
     }
   displayName: 'Create Power Platform Environment'

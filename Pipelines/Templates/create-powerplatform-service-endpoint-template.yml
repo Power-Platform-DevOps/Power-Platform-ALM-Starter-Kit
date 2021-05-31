@@ -109,7 +109,7 @@ stages:
 - stage: 'RequestBodyFileDeletion'
   displayName: 'Service Endpoint Deletion'
   dependsOn: ServiceEndpointCreation
-  condition: or(succeeded(), failed())
+  condition: in(dependencies.ServiceEndpointCreation.result, 'Succeeded', 'Failed')
   jobs:
     - job: 'RequestBodyFileDeletion'
       displayName: 'RequestBodyFileDeletion job'
