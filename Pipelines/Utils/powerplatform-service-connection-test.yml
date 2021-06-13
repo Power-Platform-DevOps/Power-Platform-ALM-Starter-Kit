@@ -1,0 +1,31 @@
+# Pipeline for the test of a Power Platform service connection with the name provided
+
+# Pipeline triggered manually
+trigger: none
+
+parameters:
+#  PowerPlatformServiceConnectionName: Name of the Power Platform service connection to test
+- name: PowerPlatformServiceConnectionNameParameter
+  displayName: Power Platform service connection Name
+  type: string
+
+variables:
+  - name: PowerPlatformServiceConnectionName
+    value: ${{ parameters.PowerPlatformServiceConnectionNameParameter }}
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+# Install the Power Platform Build Tools extension on the agent
+- task: PowerPlatformToolInstaller@0
+  displayName: 'Install Power Platform Build Tools'
+  inputs:
+    DefaultVersion: true
+
+# Execute the "Who Am I" action to check that the Power Platform service connection provided is operational
+- task: PowerPlatformWhoAmi@0
+  displayName: 'Test Power Platform service connection'
+  inputs:
+    authenticationType: PowerPlatformSPN
+    PowerPlatformSPN: '$(PowerPlatformServiceConnectionName)'

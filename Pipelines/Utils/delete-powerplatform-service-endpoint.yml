@@ -1,0 +1,26 @@
+# Pipeline used to delete a Power Platform service connection based on the name of the associated Power Platform environment
+
+# Pipeline triggered manually
+trigger: none
+
+parameters:
+#  EnvironmentName: Name of the Power Platform environment associated to the service connection to delete
+- name: EnvironmentNameParameter
+  displayName: Power Platform environment Name
+  type: string
+
+variables:
+  # Variable group with the following variables:
+  #   AzureDevOpsOrganizationURL: URL of the considered Azure DevOps organization (ex: https://dev.azure.com/<organization>/)
+  #   PatToken: Personal Access Token is full permissions for the creation of the Power Platform service connection
+  - group: power-platform-environment-management-variable-group
+
+  - name: EnvironmentName
+    value: ${{ parameters.EnvironmentNameParameter }}
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+# Call to the pipeline template for the deletion of a Power Platform service endpoint
+- template: ../Templates/delete-powerplatform-service-endpoint-template.yml

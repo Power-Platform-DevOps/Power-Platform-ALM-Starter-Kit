@@ -1,0 +1,37 @@
+name: powershell-functions-unit-tests-on-pr
+# Execute the unit tests for the PowerShell functions on a pull request to main
+
+# Workflow triggered by a pull request targeting the main branch
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+    - 'Scripts/*.ps1'
+
+jobs:
+  # Job for the execution of the unit tests for PowerShell functions
+  aa4am-setup-unit-tests:
+    runs-on: windows-latest
+
+    steps:
+    # Add support for long paths for the checkout
+    - name: Support long paths
+      run: git config --system core.longpaths true
+
+    # Checkout the content of the repository
+    - uses: actions/checkout@v2
+
+    # Install required PowerShell modules
+    - name: Install required modules
+      run: |
+        Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+        Install-Module -Name Microsoft.PowerApps.Administration.PowerShell -Force
+      shell: powershell
+    
+    # Run Pester unit tests
+    - name: Run Pester unit tests
+      run: |
+        cd Scripts\Tests\
+        Invoke-Pester -Path .\ -Output Detailed -TagFilter UnitTests
+      shell: powershell

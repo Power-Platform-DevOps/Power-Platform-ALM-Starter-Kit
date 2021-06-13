@@ -1,0 +1,34 @@
+# Pipeline template for the creation of a Power Platform environment if it does not exist
+
+steps:
+# Installation of the "Microsoft.PowerApps.Administration.PowerShell" module
+- powershell: |
+    Install-Module -Name Microsoft.PowerApps.Administration.PowerShell -Force -Verbose -Scope CurrentUser
+  displayName: 'Install Microsoft.PowerApps.Administration.PowerShell'
+
+# Add a Power Apps account to use the "Microsoft.PowerApps.Administration.PowerShell" module
+# Run the "New-DataverseEnvironment" PowerShell function to create the Power Platform environment
+- powershell: |
+    Add-PowerAppsAccount -TenantID $(TenantId) -ApplicationId $(ApplicationId) -ClientSecret $(ClientSecret)
+
+    Import-Module $(System.DefaultWorkingDirectory)/Scripts/New-DataverseEnvironment.ps1 -Force
+
+    $NewDataverseEnvironmentParams = @{
+      DisplayName = "$(EnvironmentName)"
+      DomainName = "$(generatePowerPlatformEnvironmentDomainName.PowerPlatformEnvironmentDomainName)"
+      Sku = "$(PowerPlatformEnvironmentSKU)"
+      ConfigurationFilePath = "$(System.DefaultWorkingDirectory)\Configuration\$(DataverseEnvironmentConfigurationFileName)"
+      Description = "$(EnvironmentDescription)"
+    }
+
+    if ("$(EnvironmentSecurityGroupId)" -ne "") {
+      $NewDataverseEnvironmentParams += @{SecurityGroupId = "$(EnvironmentSecurityGroupId)"}
+    }
+
+    $dataverseEnvironment = New-DataverseEnvironment @NewDataverseEnvironmentParams -verbose
+
+    if ($dataverseEnvironment.Error -ne $null) {
+      $error = $dataverseEnvironment.Error
+      throw "Error in the creation of the Dataverse environment: $error"
+    }
+  displayName: 'Create Power Platform Environment'
