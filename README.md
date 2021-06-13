@@ -59,7 +59,7 @@ Power-Platform-ALM-Starter-Kit
 │   │   New-DataverseEnvironment.ps1: PowerShell function for the creation of a Dataverse environment if it does not exist (search based on the name provided)
 ```
 
-## How to deploy the Power Platform ALM Starter Kit?
+## How to set up the Power Platform ALM Starter Kit?
 ### Prerequisites
 
 To use this starter kit, you will need to have the following components already available:
@@ -76,8 +76,9 @@ To use this starter kit, you will need to have the following components already 
 
 1. Copy the `Pipelines`, `Configuration` and `Scripts` folders of this repository
 2. Past it at the root of the repository in the Azure DevOps project you want to use
-3. Create pipelines from all YAML pipeline definitions in the `Pipelines/Utils` folder
-4. Create a **variable group** in your Azure DevOps project with the following name and with the variables below: `power-platform-environment-management-variable-group`
+3. Update the **DataverseEnvironmentConfiguration.txt** configuration file in the **Configuration** folder with the configuration you want for your environments (*you can use the content of the **Resources** section of this page to help you complete this step*)
+4. Create pipelines from all YAML pipeline definitions in the `Pipelines/Utils` folder
+5. Create a **variable group** in your Azure DevOps project with the following name and with the variables below: `power-platform-environment-management-variable-group`
    - `ApplicationId`: **Application (client) ID** of your app registration in Azure Active Directory
    - `AzureDevOpsOrganizationURL`: **URL** of the Azure DevOps organization you are working in (*ex: https://dev.azure.com/demonstration/*)
    - `ClientSecret`: **Clien secret** of your app registration in Azure Active Directory
@@ -85,7 +86,7 @@ To use this starter kit, you will need to have the following components already 
    - `PatToken`: Value of the **PAT (Personal access token)** we talked about in the **Prerequisites** section above
    - `PowerPlatformEnvironmentURLBase`: **Base of the URL** (linked to the location) you want to consider for your Dataverse environments to create (*ex: crm12.dynamics.com*)
    - `TenantId`: **ID** of your app registration in Azure Active Directory
-5. Test the pipelines
+6. Test the pipelines
 
 ### Resources
 
