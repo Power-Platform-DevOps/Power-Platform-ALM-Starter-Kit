@@ -59,7 +59,7 @@ Power-Platform-ALM-Starter-Kit
 │   │   New-DataverseEnvironment.ps1: PowerShell function for the creation of a Dataverse environment if it does not exist (search based on the name provided)
 ```
 
-## How to set up the Power Platform ALM Starter Kit?
+## How to set-up the Power Platform ALM Starter Kit?
 ### Prerequisites
 
 To use this starter kit, you will need to have the following components already available:
