@@ -19,7 +19,7 @@
 </p>
 
 The goal of this project is to provide to the `Power Platform community` a `kit` that will `help people start their DevOps journey with the Power Plaform`.
-The content of this repository mainly focus `advanced makers` with experience with ALM concepts and **code first** development.
+The content of this repository is mainly for `advanced makers` with experience with ALM concepts and programming skills.
 We will try to make this **starter kit** useful for you.
 
 ## What does the Power Platform ALM Starter Kit currently covers?
