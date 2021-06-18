@@ -67,7 +67,7 @@ To use this starter kit, you will need to have the following components already 
 - an **Azure DevOps project with a repository**
 - the **Power Platform Build Tools** extension installed in your Azure DevOps organization
 - a **PAT (Personal access token)** created for the considered Azure DevOps organization with `Full access` (*at the moment, we are not able to clearly identify the access needed to enable a service connection for all pipelines*)
-- Add the following permissions to your project **Build Service** user account in your repository settings (*Project Settings > Repositories > Security tab > "YourProjectName Build Service [...]"*)
+- Add the following permissions to your project **Build Service** user account in your repository settings (*Project Settings > Repositories > Security tab > "YourProjectName Build Service [...]" > Permission > Allow*)
   - **Contribute**
   - **Create tag**
   - **Read**
