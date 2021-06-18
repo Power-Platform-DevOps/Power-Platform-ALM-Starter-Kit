@@ -96,13 +96,13 @@ To use this starter kit, you will need to have the following components already 
 3. Update the **DataverseEnvironmentConfiguration.txt** configuration file in the **Configuration** folder with the configuration you want for your environments (*you can use the content of the [**Resources**](#resources) section of this page to help you complete this step*)
 4. Create pipelines from all YAML pipeline definitions in the `Pipelines/Utils` folder (*Pipelines > New pipeline > Azure Repos Git (YAML) > "NameOfRepositoryWithPipelineDefinitions" > Existing Azure Pipelines YAML File > "BranchWithPipelineDefinitions" > /Pipelines/Utils/...*)
 5. Create a **variable group** in your Azure DevOps project with the following name and with the variables below: `power-platform-environment-management-variable-group`
-   - `ApplicationId`: **Application (client) ID** of your app registration in Azure Active Directory
+   - `ApplicationId` (*secret recommended*): **Application (client) ID** of your app registration in Azure Active Directory
    - `AzureDevOpsOrganizationURL`: **URL** of the Azure DevOps organization you are working in (*ex: https://dev.azure.com/demonstration/*)
-   - `ClientSecret`: **Clien secret** of your app registration in Azure Active Directory
+   - `ClientSecret` (*⚠ secret strongly recommended*): **Client secret** of your app registration in Azure Active Directory
    - `DataverseEnvironmentConfigurationFileName`: **Full name** (with extension) of the file you want to use for the configuration of the Dataverse environments to create (*ex: DataverseEnvironmentConfiguration.txt*)
-   - `PatToken`: Value of the **PAT (Personal access token)** we talked about in the **Prerequisites** section above
+   - `PatToken` (*⚠ secret strongly recommended*): Value of the **PAT (Personal access token)** we talked about in the **Prerequisites** section above
    - `PowerPlatformEnvironmentURLBase`: **Base of the URL** (linked to the location) you want to consider for your Dataverse environments to create (*ex: crm12.dynamics.com*)
-   - `TenantId`: **ID** of your app registration in Azure Active Directory
+   - `TenantId` (*secret recommended*): **ID** of your app registration in Azure Active Directory
 6. Test the pipelines
 
 ### Resources
