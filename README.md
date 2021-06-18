@@ -24,10 +24,10 @@ We will try to make this **starter kit** useful for you.
 
 ## What does the Power Platform ALM Starter Kit currently covers?
 
-* Create a Power Platform environment and the corresponding service endpoint in Azure DevOps using a pipeline you can trigger manually
-* Create a Power Platform service endpoint associated to an existing environment using a pipeline you can trigger manually
-* Delete a Power Platform environment and the corresponding service endpoint in Azure DevOps using a pipeline you can trigger manually
-* Delete a Power Platform service endpoint associated to an existing environment using a pipeline you can trigger manually
+* Create a Power Platform environment and the corresponding Power Platform service connection in Azure DevOps using a pipeline you can trigger manually
+* Create a Power Platform Power Platform service connection associated to an existing environment using a pipeline you can trigger manually
+* Delete a Power Platform environment and the corresponding Power Platform service connection in Azure DevOps using a pipeline you can trigger manually
+* Delete a Power Platform Power Platform service connection associated to an existing environment using a pipeline you can trigger manually
 
 ## What can you find in the Power Platform ALM Starter Kit?
 
