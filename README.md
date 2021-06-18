@@ -87,7 +87,7 @@ To use this starter kit, you will need to have the following components already 
 ```
 
 - an **application user** created on one of your existing Dataverse environments (*for example a **Production** Dataverse environment you already have*) with the **System Administrator** security role using the **Application (client) ID** of the app registration you registered previously in Azure AD
-- a **Power Platform service connection** created in the considered Azure DevOps project associated to the Dataverse environment we talked about in the previous point with the application user registered
+- a **Power Platform service connection** created in the considered Azure DevOps project associated to the Dataverse environment we talked about in the previous step using the information (*Application (client) ID*, *Directory (tenant) ID* and *Client Secret*) of the app registration you registered previously in Azure AD
 
 ### Step-by-step guide
 
