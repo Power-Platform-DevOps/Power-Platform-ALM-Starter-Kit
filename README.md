@@ -71,7 +71,7 @@ To use this starter kit, you will need to have the following components already 
   - **Contribute**
   - **Create tag**
   - **Read**
-  - **Bypass policies when pushing** - if you want to create your Dataverse environments from a branch with policies (* ⚠ not recommended*)
+  - **Bypass policies when pushing** - if you want to create your Dataverse environments from a branch with policies (*⚠ not recommended*)
 
 > Note: In a multi-tenant scenario, you will need to follow the steps below related to the Azure AD app registration **for each considered tenant where you want to manage Dataverse environments**.
 
