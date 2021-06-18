@@ -78,7 +78,7 @@ To use this starter kit, you will need to have the following components already 
 - an **app registration** registered in Azure Active Directory with (*at least*):
   - the following permissions with admin consent granted: `Dynamics CRM.user_impersonation`
   - a client secret generated and stored somewhere safe
-  - the correct account type (*single tenant* or *multitenant*) depending on your scenario
+  - the correct account type selected (*single tenant* or *multitenant*) depending on your scenario
 - run the [**New-PowerAppManagementApp**](https://docs.microsoft.com/en-us/powershell/module/microsoft.powerapps.administration.powershell/new-powerappmanagementapp) PowerShell command of the [**Microsoft.PowerApps.Administration.PowerShell**](https://docs.microsoft.com/en-us/powershell/module/microsoft.powerapps.administration.powershell) specifying the **Application (client) ID** of the app registration you registered previously in Azure AD
 
 ```shell
