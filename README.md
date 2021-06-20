@@ -19,15 +19,15 @@
 </p>
 
 The goal of this project is to provide to the `Power Platform community` a `kit` that will `help people start their DevOps journey with the Power Plaform`.
-The content of this repository mainly focus `advanced makers` with experience with ALM concepts and **code first** development.
+The content of this repository is mainly for `advanced makers` with experience with ALM concepts and programming skills.
 We will try to make this **starter kit** useful for you.
 
 ## What does the Power Platform ALM Starter Kit currently covers?
 
-* Create a Power Platform environment and the corresponding service endpoint in Azure DevOps using a pipeline you can trigger manually
-* Create a Power Platform service endpoint associated to an existing environment using a pipeline you can trigger manually
-* Delete a Power Platform environment and the corresponding service endpoint in Azure DevOps using a pipeline you can trigger manually
-* Delete a Power Platform service endpoint associated to an existing environment using a pipeline you can trigger manually
+* Create a Power Platform environment and the corresponding Power Platform service connection in Azure DevOps using a pipeline you can trigger manually
+* Create a Power Platform Power Platform service connection associated to an existing environment using a pipeline you can trigger manually
+* Delete a Power Platform environment and the corresponding Power Platform service connection in Azure DevOps using a pipeline you can trigger manually
+* Delete a Power Platform Power Platform service connection associated to an existing environment using a pipeline you can trigger manually
 
 ## What can you find in the Power Platform ALM Starter Kit?
 
@@ -66,26 +66,43 @@ To use this starter kit, you will need to have the following components already 
 - an **Azure DevOps organization**
 - an **Azure DevOps project with a repository**
 - the **Power Platform Build Tools** extension installed in your Azure DevOps organization
-- an **app registration** registered in Azure Active Directory with (*at least*) the following permissions and a client secret generated: `Dynamics CRM.user_impersonation`
-- an **application user** created on one of your existing Dataverse environments (*for example the **Production** environment*) with the **System Administrator** security role using the app registration we talked about in the previous point
-- a **Power Platform service connection** created in the considered Azure DevOps project associated to the Dataverse environment we talked about in the previous point with the application user registered
 - a **PAT (Personal access token)** created for the considered Azure DevOps organization with `Full access` (*at the moment, we are not able to clearly identify the access needed to enable a service connection for all pipelines*)
-- Add the **Contribute** permission to your project **Build Service** user account in your repository
+- Add the following permissions to your project **Build Service** user account in your repository settings (*Project Settings > Repositories > Security tab > "YourProjectName Build Service [...]" > Permission > Allow*)
+  - **Contribute**
+  - **Create tag**
+  - **Read**
+  - **Bypass policies when pushing** - if you want to create your Dataverse environments from a branch with policies (*⚠ not recommended*)
+
+> Note: In a multi-tenant scenario, you will need to follow the steps below related to the Azure AD app registration **for each considered tenant where you want to manage Dataverse environments**.
+
+- an **app registration** registered in Azure Active Directory with (*at least*):
+  - the following permissions with admin consent granted: `Dynamics CRM.user_impersonation`
+  - a client secret generated and stored somewhere safe
+  - the correct account type selected (*single tenant* or *multitenant*) depending on your scenario
+- run the [**New-PowerAppManagementApp**](https://docs.microsoft.com/en-us/powershell/module/microsoft.powerapps.administration.powershell/new-powerappmanagementapp) PowerShell command of the [**Microsoft.PowerApps.Administration.PowerShell**](https://docs.microsoft.com/en-us/powershell/module/microsoft.powerapps.administration.powershell) specifying the **Application (client) ID** of the app registration you registered previously in Azure AD
+
+```shell
+> Add-PowerAppsAccount
+> New-PowerAppManagementApp -ApplicationId 00000000-0000-0000-0000-000000000000
+```
+
+- an **application user** created on one of your existing Dataverse environments (*for example a **Production** Dataverse environment you already have*) with the **System Administrator** security role using the **Application (client) ID** of the app registration you registered previously in Azure AD
+- a **Power Platform service connection** created in the considered Azure DevOps project associated to the Dataverse environment we talked about in the previous step using the information (*Application (client) ID*, *Directory (tenant) ID* and *Client Secret*) of the app registration you registered previously in Azure AD
 
 ### Step-by-step guide
 
 1. Copy the `Pipelines`, `Configuration` and `Scripts` folders of this repository
 2. Past it at the root of the repository in the Azure DevOps project you want to use
-3. Update the **DataverseEnvironmentConfiguration.txt** configuration file in the **Configuration** folder with the configuration you want for your environments (*you can use the content of the **Resources** section of this page to help you complete this step*)
-4. Create pipelines from all YAML pipeline definitions in the `Pipelines/Utils` folder
+3. Update the **DataverseEnvironmentConfiguration.txt** configuration file in the **Configuration** folder with the configuration you want for your environments (*you can use the content of the [**Resources**](#resources) section of this page to help you complete this step*)
+4. Create pipelines from all YAML pipeline definitions in the `Pipelines/Utils` folder (*Pipelines > New pipeline > Azure Repos Git (YAML) > "NameOfRepositoryWithPipelineDefinitions" > Existing Azure Pipelines YAML File > "BranchWithPipelineDefinitions" > /Pipelines/Utils/...*)
 5. Create a **variable group** in your Azure DevOps project with the following name and with the variables below: `power-platform-environment-management-variable-group`
-   - `ApplicationId`: **Application (client) ID** of your app registration in Azure Active Directory
+   - `ApplicationId` (*secret type varible recommended*): **Application (client) ID** of your app registration in Azure Active Directory
    - `AzureDevOpsOrganizationURL`: **URL** of the Azure DevOps organization you are working in (*ex: https://dev.azure.com/demonstration/*)
-   - `ClientSecret`: **Clien secret** of your app registration in Azure Active Directory
+   - `ClientSecret` (*⚠ secret type varible strongly recommended*): **Client secret** of your app registration in Azure Active Directory
    - `DataverseEnvironmentConfigurationFileName`: **Full name** (with extension) of the file you want to use for the configuration of the Dataverse environments to create (*ex: DataverseEnvironmentConfiguration.txt*)
-   - `PatToken`: Value of the **PAT (Personal access token)** we talked about in the **Prerequisites** section above
+   - `PatToken` (*⚠ secret type varible strongly recommended*): Value of the **PAT (Personal access token)** we talked about in the **Prerequisites** section above
    - `PowerPlatformEnvironmentURLBase`: **Base of the URL** (linked to the location) you want to consider for your Dataverse environments to create (*ex: crm12.dynamics.com*)
-   - `TenantId`: **ID** of your app registration in Azure Active Directory
+   - `TenantId` (*secret type varible recommended*): **ID** of your app registration in Azure Active Directory
 6. Test the pipelines
 
 ### Resources
