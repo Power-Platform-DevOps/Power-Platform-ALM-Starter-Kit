@@ -92,17 +92,17 @@ To use this starter kit, you will need to have the following components already 
 ### Step-by-step guide
 
 1. Copy the `Pipelines`, `Configuration` and `Scripts` folders of this repository
-2. Past it at the root of the repository in the Azure DevOps project you want to use
+2. Paste it at the root of the repository in the Azure DevOps project you want to use
 3. Update the **DataverseEnvironmentConfiguration.txt** configuration file in the **Configuration** folder with the configuration you want for your environments (*you can use the content of the [**Resources**](#resources) section of this page to help you complete this step*)
 4. Create pipelines from all YAML pipeline definitions in the `Pipelines/Utils` folder (*Pipelines > New pipeline > Azure Repos Git (YAML) > "NameOfRepositoryWithPipelineDefinitions" > Existing Azure Pipelines YAML File > "BranchWithPipelineDefinitions" > /Pipelines/Utils/...*)
 5. Create a **variable group** in your Azure DevOps project with the following name and with the variables below: `power-platform-environment-management-variable-group`
-   - `ApplicationId` (*secret type varible recommended*): **Application (client) ID** of your app registration in Azure Active Directory
+   - `ApplicationId` (*secret type variable recommended*): **Application (client) ID** of your app registration in Azure Active Directory
    - `AzureDevOpsOrganizationURL`: **URL** of the Azure DevOps organization you are working in (*ex: https://dev.azure.com/demonstration/*)
-   - `ClientSecret` (*⚠ secret type varible strongly recommended*): **Client secret** of your app registration in Azure Active Directory
+   - `ClientSecret` (*⚠ secret type variable strongly recommended*): **Client secret** of your app registration in Azure Active Directory
    - `DataverseEnvironmentConfigurationFileName`: **Full name** (with extension) of the file you want to use for the configuration of the Dataverse environments to create (*ex: DataverseEnvironmentConfiguration.txt*)
-   - `PatToken` (*⚠ secret type varible strongly recommended*): Value of the **PAT (Personal access token)** we talked about in the **Prerequisites** section above
+   - `PatToken` (*⚠ secret type variable strongly recommended*): Value of the **PAT (Personal access token)** we talked about in the **Prerequisites** section above
    - `PowerPlatformEnvironmentURLBase`: **Base of the URL** (linked to the location) you want to consider for your Dataverse environments to create (*ex: crm12.dynamics.com*)
-   - `TenantId` (*secret type varible recommended*): **ID** of your app registration in Azure Active Directory
+   - `TenantId` (*secret type variable recommended*): **ID** of your app registration in Azure Active Directory
 6. Test the pipelines
 
 ### Resources
